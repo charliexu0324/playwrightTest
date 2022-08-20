@@ -33,9 +33,9 @@ export class bookingPage {
     this.dropOffDate = page.locator("[name=dropoffDate]");
     this.pickupLocation = page.locator("#select-pickupLocation");
     this.dropoffLocation = page.locator("#select-dropoffLocation");
-    this.driversLicenseCountry = page.locator("span#select-driversLicense");
-    this.adultsNumber = page.locator("span#select-adults");
-    this.childrenNumber = page.locator("span#select-children");
+    this.driversLicenseCountry = page.locator("#select-driversLicense");
+    this.adultsNumber = page.locator("#select-adults");
+    this.childrenNumber = page.locator("#select-children");
 
     this.pickupLocationData = page.locator("text=Auckland Airport >> nth=0");
     this.dropoffLocationData = page.locator("text=Auckland Airport >> nth=1");
