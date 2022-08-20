@@ -7,9 +7,10 @@
     "@playwright/test": "^1.25.0"
   },
   "scripts": {
-    "booking": "npx playwright test bookingSearch.spec.ts"
+    "booking": "npx playwright test bookingSearch.spec.ts --headed"
   },
   "dependencies": {
+    "dayjs": "^1.11.5",
     "json-server": "^0.17.0"
   }
 }
