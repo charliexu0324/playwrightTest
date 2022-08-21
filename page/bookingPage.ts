@@ -2,7 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import dayjs from "dayjs";
 import { path } from "../path/pathData";
 
-var customParseFormat = require("dayjs/plugin/customParseFormat");
+let customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
 export class bookingPage {
@@ -31,16 +31,18 @@ export class bookingPage {
 
     this.pickUpDate = page.locator("[name=pickupDate]");
     this.dropOffDate = page.locator("[name=dropoffDate]");
-    this.pickupLocation = page.locator("#select-pickupLocation");
-    this.dropoffLocation = page.locator("#select-dropoffLocation");
-    this.driversLicenseCountry = page.locator("#select-driversLicense");
-    this.adultsNumber = page.locator("#select-adults");
-    this.childrenNumber = page.locator("#select-children");
 
+    this.pickupLocation = page.locator("#select-pickupLocation");
     this.pickupLocationData = page.locator("text=Auckland Airport >> nth=0");
+    this.dropoffLocation = page.locator("#select-dropoffLocation");
     this.dropoffLocationData = page.locator("text=Auckland Airport >> nth=1");
+
+    this.driversLicenseCountry = page.locator("#select-driversLicense");
     this.driversLicenseCountryData = page.locator("text=Australia >> nth=0");
+
+    this.adultsNumber = page.locator("#select-adults");
     this.numberData = page.locator("text=2 >> nth=0");
+    this.childrenNumber = page.locator("#select-children");
     this.numberData2 = page.locator("text=2 >> nth=1");
 
     this.promoCode = page.locator("[name=promoCode]");
@@ -49,7 +51,7 @@ export class bookingPage {
     this.resultTableTitleSleep = page.locator("text=Sleeps >> nth=1");
   }
 
-  async goto(url) {
+  async goto(url: string | undefined) {
     await this.page.goto(`${url}${path.bookingSearch}`, {
       waitUntil: "domcontentloaded",
     });
@@ -57,7 +59,7 @@ export class bookingPage {
     await expect(this.searchButton).toBeVisible();
   }
 
-  async setUpDate(fromMonth = 1, ToMonth = 2) {
+  async setUpDate(fromMonth: number = 1, ToMonth: number = 2) {
     const pickUpDateString = dayjs()
       .add(fromMonth, "month")
       .format("DD/MM/YYYY")
@@ -73,7 +75,7 @@ export class bookingPage {
     return { pickUpDateString, dropOffDateString };
   }
 
-  async bookingFlow(pickUpDateString, dropOffDateString) {
+  async bookingFlow(pickUpDateString: string, dropOffDateString: string) {
     await this.page.fill("[name=pickupDate]", "");
     await this.pickUpDate.fill(pickUpDateString);
     await this.page.fill("[name=dropoffDate]", "");
@@ -90,7 +92,7 @@ export class bookingPage {
     await this.childrenNumber.click();
     await this.numberData2.click();
 
-    await this.promoCode.type("0630");
+    await this.promoCode.type("1234");
 
     await expect(this.searchButton).not.toBeDisabled();
     await this.searchButton.click();
@@ -100,8 +102,10 @@ export class bookingPage {
     const dateObject = await this.setUpDate();
     const pickUpDateString = dateObject.pickUpDateString;
     const dropOffDateString = dateObject.dropOffDateString;
+
     await this.bookingFlow(pickUpDateString, dropOffDateString);
     await this.page.waitForLoadState();
+
     await expect(this.nullResultsTag).not.toBeVisible();
     await expect(this.resultTableTitleSleep).toBeVisible();
   }
@@ -110,8 +114,10 @@ export class bookingPage {
     const dateObject = await this.setUpDate(98, 99);
     const pickUpDateString = dateObject.pickUpDateString;
     const dropOffDateString = dateObject.dropOffDateString;
+
     await this.bookingFlow(pickUpDateString, dropOffDateString);
     await this.page.waitForLoadState();
+
     await expect(this.nullResultsTag).toBeVisible();
     await expect(this.resultTableTitleSleep).toBeVisible();
   }
