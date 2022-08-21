@@ -18,6 +18,6 @@ test("invalid mighty booking should show no booking @smoke", async ({
   await booking.goto(baseURL);
   await booking.getInvalidBooking();
   // Bug: No error handling in FE.
-  // When Time range is too far away from now, BE will throw 400 error,
+  // When BE throws 400 error,
   // But FE will show a blank page as a search result, no error or hint.
 });
